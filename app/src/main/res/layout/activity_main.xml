@@ -22,7 +22,7 @@
     <TextView
         android:id="@+id/labeldist"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:height="35dp"
         android:text="TextView"
         android:textSize="12dp"
@@ -39,14 +39,14 @@
 
     </TextView>
 
-    <SeekBar
-        android:id="@+id/seekLine"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:max="100"
-        android:progressTint="#ff0000"
-        android:thumbTint="#ff0000" />
+        <SeekBar
+            android:id="@+id/seekLine"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="100"
+            android:thumbTint="#00ff00"
+            android:progressTint="#00ff00"
+            android:layout_marginTop="5dp"/>
 
     <TextView
         android:id="@+id/lblPolycolor"

@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdate;
@@ -26,14 +27,16 @@ import com.google.android.gms.maps.model.Polyline;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
-public class MainActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class MainActivity extends AppCompatActivity implements OnMapReadyCallback, SeekBar.OnSeekBarChangeListener {
 
     GoogleMap map;
     List<Marker> arrayMkrs = new ArrayList<>();
     List<LatLng> arrayLtLg = new ArrayList<>();
     TextView labelDist;
     Polygon polygon = null;
+    SeekBar lineSeekColor, polySeekColor;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +45,13 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         labelDist = findViewById(R.id.labeldist);
         labelDist.setVisibility(TextView.INVISIBLE);
         labelDist.setTextSize(30);
+
+        lineSeekColor = findViewById(R.id.seekLine);
+        polySeekColor = findViewById(R.id.seekPolyLine);
+
+        lineSeekColor.setOnSeekBarChangeListener(this);
+        polySeekColor.setOnSeekBarChangeListener(this);
+
         MapLoading();
     }
 
@@ -132,13 +142,50 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 @SuppressLint({"NewApi", "LocalSuppress"}) Integer totalInInt = Math.toIntExact(Math.round(total));
                 if (labelDist.getVisibility() == TextView.INVISIBLE) {
                     labelDist.setVisibility(TextView.VISIBLE);
-                    labelDist.setText("Total Distance is :- " + totalInInt + " km");
+                    labelDist.setText("Distance = " + totalInInt + " KM");
                 } else {
                     labelDist.setVisibility(TextView.INVISIBLE);
                     labelDist.setText("");
                 }
             }
         });
+    }
+
+    @Override
+    public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+        final int minimum = 0;
+        final int maximum = 255;
+
+        final int rand1 = new Random().nextInt((maximum - minimum) + 1) + minimum;
+        final int rand2 = new Random().nextInt((maximum - minimum) + 1) + minimum;
+
+        float[] hsvColor = {rand1, rand1, 0};
+        hsvColor[2] = 360f * i / i;
+
+        float[] hsvColor1 = {rand2, 0, rand2};
+        hsvColor1[1] = 360f * i / i;
+
+        switch (seekBar.getId()){
+            case R.id.seekLine:
+                if(polygon != null) {
+                    polygon.setStrokeColor(Color.HSVToColor(hsvColor));
+                }
+                break;
+            case R.id.seekPolyLine:
+                if (polygon != null) {
+                    polygon.setFillColor(Color.HSVToColor(hsvColor1));
+                }
+        }
+    }
+
+    @Override
+    public void onStartTrackingTouch(SeekBar seekBar) {
+
+    }
+
+    @Override
+    public void onStopTrackingTouch(SeekBar seekBar) {
+
     }
     void MapLoading() {
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
