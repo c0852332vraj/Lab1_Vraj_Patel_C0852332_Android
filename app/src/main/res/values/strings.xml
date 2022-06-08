@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Lab1_Vraj_Patel_C0852332_Android</string>
+    <string name="Location_APIKey" translatable="false">AIzaSyALzxAU-F-CdQzB8QM9eWt_IHr5TxidkUw</string>
+
 </resources>
